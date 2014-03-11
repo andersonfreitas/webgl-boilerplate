@@ -47,6 +47,7 @@
 
 		</script>
 
+		<script type="text/javascript" src="js/stats.min.js"></script>
 		<script>
 
 			/**
@@ -72,6 +73,7 @@
 			    vertex_shader, fragment_shader,
 			    currentProgram,
 			    vertex_position,
+			    stats,
 			    parameters = {  start_time  : new Date().getTime(),
 			                    time        : 0,
 			                    screenWidth : 0,
@@ -117,6 +119,13 @@
 				onWindowResize();
 				window.addEventListener( 'resize', onWindowResize, false );
 
+				stats = new Stats();
+				stats.setMode(0); // 0: fps, 1: ms
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.left = '0px';
+				stats.domElement.style.top = '0px';
+
+				document.body.appendChild( stats.domElement );
 			}
 
 			function createProgram( vertex, fragment ) {
@@ -185,8 +194,12 @@
 			function animate() {
 
 				requestAnimationFrame( animate );
+
+				stats.begin();
+
 				render();
 
+				stats.end();
 			}
 
 			function render() {
